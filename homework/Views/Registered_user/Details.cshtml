@@ -1,0 +1,48 @@
+﻿@model homework.Models.Registered_user
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>News!</h2>
+
+<div>
+    <h4>Registered_user</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Email_id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email_id)
+        </dd>
+
+       
+
+    </dl>
+</div>
+<p>
+   
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+<div>
+
+
+    <table>
+
+        <tr>
+            <th>Type News</th>
+
+        </tr>
+        @foreach (var anews in Model.News)
+        {
+            <tr>
+                <td>@Html.ActionLink(anews.Type, "Details", "News", new { id = anews.Type_id }, null)</td>
+
+
+            </tr>
+        }
+    </table>
+</div>

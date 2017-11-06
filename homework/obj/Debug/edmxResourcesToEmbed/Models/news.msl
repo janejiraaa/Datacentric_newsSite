@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="newsStoreContainer" CdmEntityContainer="newsContainer">
+    <EntitySetMapping Name="News">
+      <EntityTypeMapping TypeName="IsTypeOf(news.News)">
+        <MappingFragment StoreEntitySet="News">
+          <ScalarProperty Name="Type_id" ColumnName="Type_id" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Administrators">
+      <EntityTypeMapping TypeName="IsTypeOf(news.Administrator)">
+        <MappingFragment StoreEntitySet="Administrators">
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Password_admin" ColumnName="Password_admin" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Registered_user">
+      <EntityTypeMapping TypeName="IsTypeOf(news.Registered_user)">
+        <MappingFragment StoreEntitySet="Registered_user">
+          <ScalarProperty Name="User_id" ColumnName="User_id" />
+          <ScalarProperty Name="Email_id" ColumnName="Email_id" />
+          <ScalarProperty Name="Password_user" ColumnName="Password_user" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="Read_by" TypeName="news.Read_by" StoreEntitySet="Read_by">
+      <EndProperty Name="News">
+        <ScalarProperty Name="Type_id" ColumnName="News_Type_id" />
+      </EndProperty>
+      <EndProperty Name="Registered_user">
+        <ScalarProperty Name="User_id" ColumnName="Registered_user_User_id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="Managed_by" TypeName="news.Managed_by" StoreEntitySet="Managed_by">
+      <EndProperty Name="News">
+        <ScalarProperty Name="Type_id" ColumnName="News_Type_id" />
+      </EndProperty>
+      <EndProperty Name="Administrator">
+        <ScalarProperty Name="Code" ColumnName="Administrators_Code" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

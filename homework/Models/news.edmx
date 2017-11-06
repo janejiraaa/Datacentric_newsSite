@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="news.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="newsStoreContainer">
+    <EntitySet Name="News" EntityType="news.Store.News" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Administrators" EntityType="news.Store.Administrators" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Registered_user" EntityType="news.Store.Registered_user" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Read_by" EntityType="news.Store.Read_by" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Managed_by" EntityType="news.Store.Managed_by" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_Read_by_News" Association="news.Store.FK_Read_by_News">
+      <End Role="News" EntitySet="News" />
+      <End Role="Read_by" EntitySet="Read_by" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Read_by_Registered_user" Association="news.Store.FK_Read_by_Registered_user">
+      <End Role="Registered_user" EntitySet="Registered_user" />
+      <End Role="Read_by" EntitySet="Read_by" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Managed_by_News" Association="news.Store.FK_Managed_by_News">
+      <End Role="News" EntitySet="News" />
+      <End Role="Managed_by" EntitySet="Managed_by" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Managed_by_Administrator" Association="news.Store.FK_Managed_by_Administrator">
+      <End Role="Administrator" EntitySet="Administrators" />
+      <End Role="Managed_by" EntitySet="Managed_by" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="News">
+    <Key>
+      <PropertyRef Name="Type_id" />
+    </Key>
+    <Property Name="Type_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Type" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Administrators">
+    <Key>
+      <PropertyRef Name="Code" />
+    </Key>
+    <Property Name="Code" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Password_admin" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Registered_user">
+    <Key>
+      <PropertyRef Name="User_id" />
+    </Key>
+    <Property Name="User_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Email_id" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Password_user" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Read_by">
+    <Key>
+      <PropertyRef Name="News_Type_id" />
+      <PropertyRef Name="Registered_user_User_id" />
+    </Key>
+    <Property Name="News_Type_id" Type="int" Nullable="false" />
+    <Property Name="Registered_user_User_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Managed_by">
+    <Key>
+      <PropertyRef Name="News_Type_id" />
+      <PropertyRef Name="Administrators_Code" />
+    </Key>
+    <Property Name="News_Type_id" Type="int" Nullable="false" />
+    <Property Name="Administrators_Code" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Read_by_News">
+    <End Role="News" Type="news.Store.News" Multiplicity="1" />
+    <End Role="Read_by" Type="news.Store.Read_by" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="News">
+        <PropertyRef Name="Type_id" />
+      </Principal>
+      <Dependent Role="Read_by">
+        <PropertyRef Name="News_Type_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Read_by_Registered_user">
+    <End Role="Read_by" Type="news.Store.Read_by" Multiplicity="*" />
+    <End Role="Registered_user" Type="news.Store.Registered_user" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Registered_user">
+        <PropertyRef Name="User_id" />
+      </Principal>
+      <Dependent Role="Read_by">
+        <PropertyRef Name="Registered_user_User_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Managed_by_News">
+    <End Role="News" Type="news.Store.News" Multiplicity="1" />
+    <End Role="Managed_by" Type="news.Store.Managed_by" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="News">
+        <PropertyRef Name="Type_id" />
+      </Principal>
+      <Dependent Role="Managed_by">
+        <PropertyRef Name="News_Type_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Managed_by_Administrator">
+    <End Role="Managed_by" Type="news.Store.Managed_by" Multiplicity="*" />
+    <End Role="Administrator" Type="news.Store.Administrators" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Administrator">
+        <PropertyRef Name="Code" />
+      </Principal>
+      <Dependent Role="Managed_by">
+        <PropertyRef Name="Administrators_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="news" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="newsContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="News" EntityType="news.News" />
+          <EntitySet Name="Administrators" EntityType="news.Administrator" />
+          <EntitySet Name="Registered_user" EntityType="news.Registered_user" />
+          <AssociationSet Name="Read_by" Association="news.Read_by">
+            <End Role="News" EntitySet="News" />
+            <End Role="Registered_user" EntitySet="Registered_user" />
+          </AssociationSet>
+          <AssociationSet Name="Managed_by" Association="news.Managed_by">
+            <End Role="News" EntitySet="News" />
+            <End Role="Administrator" EntitySet="Administrators" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="News">
+          <Key>
+            <PropertyRef Name="Type_id" />
+          </Key>
+          <Property Name="Type_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Registered_user" Relationship="news.Read_by" FromRole="News" ToRole="Registered_user" />
+          <Property Name="Type" Type="String" Nullable="false" />
+          <NavigationProperty Name="Administrators" Relationship="news.Managed_by" FromRole="News" ToRole="Administrator" />
+        </EntityType>
+        <EntityType Name="Administrator">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Password_admin" Type="String" Nullable="false" />
+          <NavigationProperty Name="News" Relationship="news.Managed_by" FromRole="Administrator" ToRole="News" />
+        </EntityType>
+        <EntityType Name="Registered_user">
+          <Key>
+            <PropertyRef Name="User_id" />
+          </Key>
+          <Property Name="User_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email_id" Type="String" Nullable="false" />
+          <Property Name="Password_user" Type="String" Nullable="false" />
+          <NavigationProperty Name="News" Relationship="news.Read_by" FromRole="Registered_user" ToRole="News" />
+        </EntityType>
+        <Association Name="Read_by">
+          <End Type="news.News" Role="News" Multiplicity="*" />
+          <End Type="news.Registered_user" Role="Registered_user" Multiplicity="*" />
+        </Association>
+        <Association Name="Managed_by">
+          <End Type="news.News" Role="News" Multiplicity="*" />
+          <End Type="news.Administrator" Role="Administrator" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="newsStoreContainer" CdmEntityContainer="newsContainer">
+    <EntitySetMapping Name="News">
+      <EntityTypeMapping TypeName="IsTypeOf(news.News)">
+        <MappingFragment StoreEntitySet="News">
+          <ScalarProperty Name="Type_id" ColumnName="Type_id" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Administrators">
+      <EntityTypeMapping TypeName="IsTypeOf(news.Administrator)">
+        <MappingFragment StoreEntitySet="Administrators">
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Password_admin" ColumnName="Password_admin" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Registered_user">
+      <EntityTypeMapping TypeName="IsTypeOf(news.Registered_user)">
+        <MappingFragment StoreEntitySet="Registered_user">
+          <ScalarProperty Name="User_id" ColumnName="User_id" />
+          <ScalarProperty Name="Email_id" ColumnName="Email_id" />
+          <ScalarProperty Name="Password_user" ColumnName="Password_user" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="Read_by" TypeName="news.Read_by" StoreEntitySet="Read_by">
+      <EndProperty Name="News">
+        <ScalarProperty Name="Type_id" ColumnName="News_Type_id" />
+      </EndProperty>
+      <EndProperty Name="Registered_user">
+        <ScalarProperty Name="User_id" ColumnName="Registered_user_User_id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="Managed_by" TypeName="news.Managed_by" StoreEntitySet="Managed_by">
+      <EndProperty Name="News">
+        <ScalarProperty Name="Type_id" ColumnName="News_Type_id" />
+      </EndProperty>
+      <EndProperty Name="Administrator">
+        <ScalarProperty Name="Code" ColumnName="Administrators_Code" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

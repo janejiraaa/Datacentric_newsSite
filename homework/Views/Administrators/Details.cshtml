@@ -1,0 +1,46 @@
+﻿@model homework.Models.Administrator
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Administrator</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Password_admin)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Password_admin)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Code }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+<div>
+
+
+    <table>
+
+        <tr>
+            <th>Type News</th>
+
+        </tr>
+        @foreach (var anews in Model.News)
+        {
+            <tr>
+                <td>@Html.ActionLink(anews.Type, "Details", "News", new { id = anews.Type_id }, null)</td>
+
+
+            </tr>
+        }
+    </table>
+</div>

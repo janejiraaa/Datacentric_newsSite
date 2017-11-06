@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="news" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+  <EntityContainer Name="newsContainer" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="News" EntityType="news.News" />
+    <EntitySet Name="Administrators" EntityType="news.Administrator" />
+    <EntitySet Name="Registered_user" EntityType="news.Registered_user" />
+    <AssociationSet Name="Read_by" Association="news.Read_by">
+      <End Role="News" EntitySet="News" />
+      <End Role="Registered_user" EntitySet="Registered_user" />
+    </AssociationSet>
+    <AssociationSet Name="Managed_by" Association="news.Managed_by">
+      <End Role="News" EntitySet="News" />
+      <End Role="Administrator" EntitySet="Administrators" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="News">
+    <Key>
+      <PropertyRef Name="Type_id" />
+    </Key>
+    <Property Name="Type_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="Registered_user" Relationship="news.Read_by" FromRole="News" ToRole="Registered_user" />
+    <Property Name="Type" Type="String" Nullable="false" />
+    <NavigationProperty Name="Administrators" Relationship="news.Managed_by" FromRole="News" ToRole="Administrator" />
+  </EntityType>
+  <EntityType Name="Administrator">
+    <Key>
+      <PropertyRef Name="Code" />
+    </Key>
+    <Property Name="Code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Password_admin" Type="String" Nullable="false" />
+    <NavigationProperty Name="News" Relationship="news.Managed_by" FromRole="Administrator" ToRole="News" />
+  </EntityType>
+  <EntityType Name="Registered_user">
+    <Key>
+      <PropertyRef Name="User_id" />
+    </Key>
+    <Property Name="User_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Email_id" Type="String" Nullable="false" />
+    <Property Name="Password_user" Type="String" Nullable="false" />
+    <NavigationProperty Name="News" Relationship="news.Read_by" FromRole="Registered_user" ToRole="News" />
+  </EntityType>
+  <Association Name="Read_by">
+    <End Type="news.News" Role="News" Multiplicity="*" />
+    <End Type="news.Registered_user" Role="Registered_user" Multiplicity="*" />
+  </Association>
+  <Association Name="Managed_by">
+    <End Type="news.News" Role="News" Multiplicity="*" />
+    <End Type="news.Administrator" Role="Administrator" Multiplicity="*" />
+  </Association>
+</Schema>

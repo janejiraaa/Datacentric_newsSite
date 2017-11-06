@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="news.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="newsStoreContainer">
+    <EntitySet Name="News" EntityType="news.Store.News" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Administrators" EntityType="news.Store.Administrators" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Registered_user" EntityType="news.Store.Registered_user" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Read_by" EntityType="news.Store.Read_by" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Managed_by" EntityType="news.Store.Managed_by" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_Read_by_News" Association="news.Store.FK_Read_by_News">
+      <End Role="News" EntitySet="News" />
+      <End Role="Read_by" EntitySet="Read_by" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Read_by_Registered_user" Association="news.Store.FK_Read_by_Registered_user">
+      <End Role="Registered_user" EntitySet="Registered_user" />
+      <End Role="Read_by" EntitySet="Read_by" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Managed_by_News" Association="news.Store.FK_Managed_by_News">
+      <End Role="News" EntitySet="News" />
+      <End Role="Managed_by" EntitySet="Managed_by" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Managed_by_Administrator" Association="news.Store.FK_Managed_by_Administrator">
+      <End Role="Administrator" EntitySet="Administrators" />
+      <End Role="Managed_by" EntitySet="Managed_by" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="News">
+    <Key>
+      <PropertyRef Name="Type_id" />
+    </Key>
+    <Property Name="Type_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Type" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Administrators">
+    <Key>
+      <PropertyRef Name="Code" />
+    </Key>
+    <Property Name="Code" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Password_admin" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Registered_user">
+    <Key>
+      <PropertyRef Name="User_id" />
+    </Key>
+    <Property Name="User_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Email_id" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Password_user" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Read_by">
+    <Key>
+      <PropertyRef Name="News_Type_id" />
+      <PropertyRef Name="Registered_user_User_id" />
+    </Key>
+    <Property Name="News_Type_id" Type="int" Nullable="false" />
+    <Property Name="Registered_user_User_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Managed_by">
+    <Key>
+      <PropertyRef Name="News_Type_id" />
+      <PropertyRef Name="Administrators_Code" />
+    </Key>
+    <Property Name="News_Type_id" Type="int" Nullable="false" />
+    <Property Name="Administrators_Code" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Read_by_News">
+    <End Role="News" Type="news.Store.News" Multiplicity="1" />
+    <End Role="Read_by" Type="news.Store.Read_by" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="News">
+        <PropertyRef Name="Type_id" />
+      </Principal>
+      <Dependent Role="Read_by">
+        <PropertyRef Name="News_Type_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Read_by_Registered_user">
+    <End Role="Read_by" Type="news.Store.Read_by" Multiplicity="*" />
+    <End Role="Registered_user" Type="news.Store.Registered_user" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Registered_user">
+        <PropertyRef Name="User_id" />
+      </Principal>
+      <Dependent Role="Read_by">
+        <PropertyRef Name="Registered_user_User_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Managed_by_News">
+    <End Role="News" Type="news.Store.News" Multiplicity="1" />
+    <End Role="Managed_by" Type="news.Store.Managed_by" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="News">
+        <PropertyRef Name="Type_id" />
+      </Principal>
+      <Dependent Role="Managed_by">
+        <PropertyRef Name="News_Type_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Managed_by_Administrator">
+    <End Role="Managed_by" Type="news.Store.Managed_by" Multiplicity="*" />
+    <End Role="Administrator" Type="news.Store.Administrators" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Administrator">
+        <PropertyRef Name="Code" />
+      </Principal>
+      <Dependent Role="Managed_by">
+        <PropertyRef Name="Administrators_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

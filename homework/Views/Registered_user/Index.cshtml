@@ -1,0 +1,35 @@
+﻿@model IEnumerable<homework.Models.Registered_user>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Sign Up!</h2>
+
+<p>
+    @Html.ActionLink("Sign in", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Email_id)
+        </th>
+        
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email_id)
+        </td>
+       
+        <td>
+            
+            @Html.ActionLink("Go to News!", "Details", new { id=item.User_id })
+            
+        </td>
+    </tr>
+}
+
+</table>
